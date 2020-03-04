@@ -16,21 +16,38 @@ class PyBot:
     """
 
     def __init__(self):
+        self.my_input = SensoryInput()
+        self.my_output = MotorOutput()
+
+        return
+
+    def integration_loop(self):
+
+
         return
 
 
-class Input:
+class SensoryInput:
     """
-    Computer vision.
+    One Input: Vision
     """
 
     def __init__(self):
         return
 
+    def roi(self):
+        return
 
-class Output:
+    def process_image(self):
+        return
+
+    def screen_grab(self):
+        return
+
+
+class MotorOutput:
     """
-    Computer actions.
+    One Output: Speech
     """
 
     def __init__(self):
