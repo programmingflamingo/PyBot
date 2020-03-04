@@ -5,6 +5,8 @@ import tensorflow as tf
 import sklearn
 import selenium
 import numpy as np
+import time
+from PIL import ImageGrab
 ###############################################################################
 
 
@@ -12,7 +14,7 @@ import numpy as np
 ###############################################################################
 class PyBot:
     """
-    Takes in computer vision and returns computer action.
+    Takes in Sensory Input and returns Motor Output.
     """
 
     def __init__(self):
@@ -21,8 +23,17 @@ class PyBot:
 
         return
 
-    def integration_loop(self):
+    def what_am_i_looking_at(self, screen):
+        cv.namedWindow('window', cv.WINDOW_NORMAL)
+        cv.imshow('window',screen)
+        if(cv.waitKey(25) & 0xFF == ord('q')):
+            cv.destroyAllWindows()
+        return
 
+    def integration_loop(self):
+        while(True):
+            screen = self.my_input.screen_grab()
+            self.what_am_i_looking_at(screen)
 
         return
 
@@ -38,10 +49,22 @@ class SensoryInput:
     def roi(self):
         return
 
-    def process_image(self):
-        return
+    def process_image(self, originalImage):
+        processedImage = cv.cvtColor(originalImage,cv.COLOR_BGR2GRAY)
+        #processedImage = cv.resize(processedImage, (80,45))
+        #high_thresh, thresh_im = cv.threshold(processedImage, 0, 255, cv.THRESH_BINARY + cv.THRESH_OTSU)
+        #lowThresh = 0.5*high_thresh
+        processedImage = cv.Canny(processedImage, 0, 255)
+        return processedImage
 
     def screen_grab(self):
+        last_time = time.time()
+##      use win32gui, win32ui, win32con, win32api
+        screen = np.array(ImageGrab.grab())
+        new_screen = self.process_image(screen)
+        loop_time = time.time()
+        print('Loop took: {}'.format(loop_time-last_time))
+        return new_screen
         return
 
 
@@ -66,6 +89,8 @@ def checkVersion():
     return
 
 def main():
+    myBot = PyBot()
+    myBot.integration_loop()
     return
 ###############################################################################
 
